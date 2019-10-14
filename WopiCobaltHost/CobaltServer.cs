@@ -16,24 +16,32 @@ namespace WopiCobaltHost
     public class CobaltServer
     {
         private HttpListener m_listener;
-        private string m_docsPath;
-        private int m_port;
+        private string m_filePath;
+        private string m_port;
 
-        public CobaltServer(string docsPath, int port = 8080)
+        public CobaltServer(string filePath, string ip_port)
         {
-            m_docsPath = docsPath;
-            m_port = port;
+            m_filePath = filePath;
+            m_port = ip_port;
         }
 
         public void Start()
         {
-            m_listener = new HttpListener();
-            // localhost may change to the real hostname or IP
-            m_listener.Prefixes.Add(String.Format("http://localhost:{0}/wopi/", m_port));
-            m_listener.Start();
-            m_listener.BeginGetContext(ProcessRequest, m_listener);
+            try
+            {
+                m_listener = new HttpListener();
+                // localhost may change to the real hostname or IP
+                //m_listener.Prefixes.Add(String.Format("http://localhost:{0}/wopi/", m_port));
+                m_listener.Prefixes.Add(String.Format("http://{0}/wopi/", m_port));
+                m_listener.Start();
+                m_listener.BeginGetContext(ProcessRequest, m_listener);
 
-            Console.WriteLine(@"WopiServer Started");
+                Console.WriteLine(@"WopiServer Started");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public void Stop()
@@ -78,7 +86,7 @@ namespace WopiCobaltHost
                     if (editSession == null)
                     {
                         var fileExt = filename.Substring(filename.LastIndexOf('.') + 1);
-                        editSession = new FileSession(filename, m_docsPath + "/" + filename, @"marx.yu", @"marx yu", @"marx.yuf@gmail.com", false);
+                        editSession = new FileSession(filename, m_filePath + "/" + filename, @"marx.yu", @"marx yu", @"marx.yuf@gmail.com", false);
                        
                          EditSessionManager.Instance.AddSession(editSession);
                     }

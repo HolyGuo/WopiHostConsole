@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace WopiCobaltHost
 {
@@ -15,7 +16,9 @@ namespace WopiCobaltHost
         static void Main()
         {
             // docsPath parameter may change to the real local path that save demo documents(word or excel file)
-            CobaltServer svr = new CobaltServer(@"D:\\wopi-docs");
+            string ip_port = ConfigurationManager.AppSettings.Get("ip_port");
+            string file_path = ConfigurationManager.AppSettings.Get("file_path");
+            CobaltServer svr = new CobaltServer(file_path, ip_port);
             svr.Start();
 
             Console.WriteLine("A simple wopi webserver. Press any key to quit.");

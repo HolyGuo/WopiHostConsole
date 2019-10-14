@@ -2,3 +2,4 @@
 WopiCobaltHost/bin
 WopiCobaltHost/obj
 *.suo
+/.vs
