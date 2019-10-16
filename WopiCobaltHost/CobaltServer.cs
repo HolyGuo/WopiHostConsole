@@ -86,7 +86,7 @@ namespace WopiCobaltHost
                     if (editSession == null)
                     {
                         var fileExt = filename.Substring(filename.LastIndexOf('.') + 1);
-                        editSession = new FileSession(filename, m_filePath + "/" + filename, @"marx.yu", @"marx yu", @"marx.yuf@gmail.com", false);
+                        editSession = new FileSession(filename, m_filePath + "/" + filename, @"地信云科", @"地信云科", @"469748208@qq.com", false);
                        
                          EditSessionManager.Instance.AddSession(editSession);
                     }
