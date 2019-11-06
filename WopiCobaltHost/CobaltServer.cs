@@ -80,7 +80,7 @@ namespace WopiCobaltHost
                         return;
                     }
 
-                    var filename = HttpUtility.UrlDecode(stringarr[3]);
+                    var filename = HttpUtility.UrlDecode(stringarr[3]);//获取文件名称
                     //use filename as session id just test, recommend use file id and lock id as session id
                     EditSession editSession = EditSessionManager.Instance.GetSession(filename);
                     if (editSession == null)
@@ -91,7 +91,7 @@ namespace WopiCobaltHost
                          EditSessionManager.Instance.AddSession(editSession);
                     }
 
-                    if (stringarr.Length == 4 && context.Request.HttpMethod.Equals(@"GET"))
+                    if (stringarr.Length == 4 && context.Request.HttpMethod.Equals(@"GET"))//如 /wopi/files/1.dicx
                     {
                         //request of checkfileinfo, will be called first
                         var memoryStream = new MemoryStream();
@@ -107,7 +107,7 @@ namespace WopiCobaltHost
                         context.Response.OutputStream.Write(jsonResponse, 0, jsonResponse.Length);
                         context.Response.Close();
                     }
-                    else if (stringarr.Length == 5 && stringarr[4].Equals(@"contents"))
+                    else if (stringarr.Length == 5 && stringarr[4].Equals(@"contents"))//如 /wopi/files/1.dicx/contents
                     {
                         // get and put file's content
                         if (context.Request.HttpMethod.Equals(@"POST"))
@@ -117,6 +117,7 @@ namespace WopiCobaltHost
                             editSession.Save(ms.ToArray());
                             context.Response.ContentLength64 = 0;
                             context.Response.ContentType = @"text/html";
+                            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                             context.Response.StatusCode = (int)HttpStatusCode.OK;
                         }
                         else
